@@ -3,6 +3,11 @@
 This project demonstrates how to modernize legacy Windows-scheduled ETL scripts into robust, scalable Apache Airflow DAGs — deployed using Docker and integrated with AWS services like S3 and Redshift.
 
 ---
+## 📊 Architecture Overview
+
+![Architecture Diagram](https://github.com/bashoori/airflow-aws-modernization/blob/main/README.md)
+
+---
 
 ## 🚀 Features
 - Migrate `.bat`/`.py` scripts to Airflow DAGs
