@@ -1,4 +1,24 @@
-version: '3'
+version: '3.8'
+
+x-airflow-common:
+  &airflow-common
+  image: apache/airflow:2.7.3-python3.10
+  restart: always
+  env_file:
+    - ../.env
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
+    AIRFLOW__WEBSERVER__RBAC: 'true'
+    _PIP_ADDITIONAL_REQUIREMENTS: boto3 pandas requests psycopg2-binary
+  volumes:
+    - ../dags:/opt/airflow/dags
+    - ../scripts:/opt/airflow/scripts
+    - ../redshift:/opt/airflow/redshift
+    - ../plugins:/opt/airflow/plugins
+    - airflow-logs:/opt/airflow/logs
 
 services:
   postgres:
@@ -10,38 +30,27 @@ services:
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
 
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: >
+      bash -c "pip install --no-cache-dir ${_PIP_ADDITIONAL_REQUIREMENTS} && \
+      airflow db upgrade && \
+      airflow users create --username airflow --password airflow --firstname Admin --lastname User --role Admin --email admin@example.com || true"
+
   airflow-webserver:
-    image: apache/airflow:2.7.1
-    restart: always
+    <<: *airflow-common
     depends_on:
       - postgres
-    environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-      AIRFLOW__CORE__FERNET_KEY: ''  # Set securely in production
-      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
-      AIRFLOW__WEBSERVER__RBAC: 'true'
-      _PIP_ADDITIONAL_REQUIREMENTS: boto3 pandas requests
-    volumes:
-      - ../dags:/opt/airflow/dags
-      - airflow-logs:/opt/airflow/logs
-      - ../plugins:/opt/airflow/plugins
+      - airflow-init
     ports:
       - "8080:8080"
     command: webserver
 
   airflow-scheduler:
-    image: apache/airflow:2.7.1
-    restart: always
+    <<: *airflow-common
     depends_on:
       - postgres
-    environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    volumes:
-      - ../dags:/opt/airflow/dags
-      - airflow-logs:/opt/airflow/logs
-      - ../plugins:/opt/airflow/plugins
+      - airflow-init
     command: scheduler
 
 volumes:

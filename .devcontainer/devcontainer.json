@@ -1,0 +1,11 @@
+// .devcontainer/devcontainer.json
+{
+  "name": "Airflow AWS Dev",
+  "dockerComposeFile": "../docker/docker-compose.yml",
+  "service": "airflow-webserver",
+  "workspaceFolder": "/opt/airflow",
+  "extensions": ["ms-python.python", "ms-toolsai.jupyter"],
+  "settings": {
+    "python.pythonPath": "/usr/local/bin/python"
+  }
+}
