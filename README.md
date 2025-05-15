@@ -5,7 +5,7 @@ This project demonstrates how to modernize legacy Windows-scheduled ETL scripts 
 ---
 ## 📊 Architecture Overview
 
-![Architecture Diagram](https://github.com/bashoori/airflow-aws-modernization/blob/main/README.md)
+![Architecture Diagram](https://github.com/bashoori/repo/blob/master/airflow-aws-modernization/airflow-WS-S3-Redshift.png)
 
 ---
 
