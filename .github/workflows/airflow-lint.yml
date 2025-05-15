@@ -1,0 +1,17 @@
+name: Check Airflow DAGs
+
+on: [push, pull_request]
+
+jobs:
+  dag-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: pip install apache-airflow pandas requests boto3
+      - name: Lint DAGs
+        run: python dags/legacy_to_airflow_dag.py

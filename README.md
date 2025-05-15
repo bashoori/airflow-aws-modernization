@@ -19,19 +19,23 @@ This project demonstrates how to modernize legacy Windows-scheduled ETL scripts 
 ```
 airflow-aws-modernization/
 ├── dags/
-│   └── legacy_to_airflow_dag.py         # Your main DAG file (with comments)
+│   └── legacy_to_airflow_dag.py         # Main Airflow DAG file
 ├── docker/
-│   └── docker-compose.yml               # Airflow deployment config
+│   └── docker-compose.yml               # Airflow Docker deployment
 ├── scripts/
-│   └── extract_transform_load.py        # Reusable ETL logic (optional)
+│   └── extract_transform_load.py        # Optional reusable ETL script
 ├── redshift/
-│   └── create_tables.sql                # SQL DDL to prepare Redshift table
+│   └── create_tables.sql                # Redshift schema setup
 ├── docs/
-│   └── airflow_aws_architecture.png     # Architecture diagram (to be created)
-├── LICENSE                              # MIT license file
-├── README.md                            # Full project documentation
-├── .gitignore                           # With Python, Airflow, Docker exclusions
-└── .env.example                         # Placeholder for AWS credentials (not tracked)
+│   └── airflow_aws_architecture.png     # Architecture diagram
+├── LICENSE                              # MIT license
+├── README.md                            # Project documentation
+├── .gitignore                           # Ignore rules for Git
+├── .env.example                         # Sample AWS credentials (not committed)
+└── .github/
+    └── workflows/
+        └── airflow-lint.yml             # GitHub Actions CI/CD linting setup
+        
 ```
 
 ## 🧱 Tech Stack
