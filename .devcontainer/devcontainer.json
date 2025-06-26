@@ -3,20 +3,16 @@
   "name": "Airflow AWS Dev",
   "dockerComposeFile": "../docker/docker-compose.yml",
   "service": "airflow-webserver",
-  "workspaceFolder": "/opt/airflow",
+  "workspaceFolder": ".",  // ✅ Use project root
 
-  // ✅ Enable Docker-in-Docker (for docker compose)
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:1": {}
   },
 
-  // ✅ Automatically install required Python packages
   "postCreateCommand": "pip install --upgrade pip && pip install pandas boto3 requests psycopg2-binary",
 
-  // ✅ Forward port 8080 so Airflow UI is accessible
   "forwardPorts": [8080],
 
-  // ✅ Useful VS Code extensions
   "extensions": [
     "ms-python.python",
     "ms-toolsai.jupyter"
