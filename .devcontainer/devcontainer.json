@@ -3,7 +3,7 @@
   "name": "Airflow AWS Dev",
   "dockerComposeFile": "../docker/docker-compose.yml",
   "service": "airflow-webserver",
-  "workspaceFolder": ".",  // ✅ Use project root
+  "workspaceFolder": "/workspaces/airflow-aws-modernization",  // ✅ Use project root
 
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:1": {}
