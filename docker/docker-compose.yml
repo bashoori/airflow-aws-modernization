@@ -1,18 +1,25 @@
-version: '3.8'
+# ✅ Remove 'version' – no longer needed in Compose v2+
+# version: '3.8'
 
 x-airflow-common:
   &airflow-common
   image: apache/airflow:2.7.3-python3.10
   restart: always
+
+  # ✅ This file must exist – even if empty
   env_file:
     - ../.env
+
   environment:
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
     AIRFLOW__WEBSERVER__RBAC: 'true'
-    _PIP_ADDITIONAL_REQUIREMENTS: boto3 pandas requests psycopg2-binary
+
+    # ✅ Set Python packages inline (so _PIP_ADDITIONAL_REQUIREMENTS isn't undefined)
+    _PIP_ADDITIONAL_REQUIREMENTS: "boto3 pandas requests psycopg2-binary"
+
   volumes:
     - ../dags:/opt/airflow/dags
     - ../scripts:/opt/airflow/scripts
