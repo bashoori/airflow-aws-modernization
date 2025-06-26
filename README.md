@@ -24,7 +24,9 @@ This project demonstrates how to modernize legacy Windows-scheduled ETL scripts 
 ```
 airflow-aws-modernization/
 ├── dags/
-│   └── legacy_to_airflow_dag.py         # Main Airflow DAG file
+│   ├── legacy_to_airflow_dag.py         # Main Airflow DAG file
+│   └── utilities/
+│       └── test_redshift_connection_env.py  # Redshift connection test DAG
 ├── docker/
 │   └── docker-compose.yml               # Airflow Docker deployment
 ├── scripts/
@@ -41,6 +43,7 @@ airflow-aws-modernization/
     └── workflows/
         └── airflow-lint.yml             # GitHub Actions CI/CD linting setup
         
+        
 ```
 
 ## 🧱 Tech Stack
@@ -49,6 +52,7 @@ airflow-aws-modernization/
 - PostgreSQL (Airflow backend)
 - AWS S3 (data storage)
 - Pandas + Requests + Boto3
+- psycopg2 (for Redshift connections)  
 
 ---
 
@@ -79,22 +83,23 @@ Go to [http://localhost:8080](http://localhost:8080) and enable the `legacy_to_a
 ---
 
 ## 🗂️ DAG Tasks Overview
+
+🔹 Main DAG: legacy_to_airflow_dag.py
 - **Extract**: Pull product data from a public API
 - **Transform**: Add derived fields (e.g., tax-calculated price)
 - **Load**: Upload CSV to AWS S3 bucket
 
----
+🔹 Utility DAG: test_redshift_connection_env.py
+This DAG validates that Airflow can successfully connect to an AWS Redshift cluster using credentials stored in a `.env` file.
 
-## 📊 Architecture
-> Diagram available at: `docs/airflow_aws_architecture.png` (to be added)
+	•	Uses psycopg2 to run a simple test query
+	•	Logs success/failure with retry and timeout
+	•	Confirms Redshift connectivity before deploying full pipelines
 
 ---
 
 ## 🧠 About the Author
-Built with ❤️ by **Bita Ashoori** — Data Engineer & Automation Enthusiast
+Built by **Bita Ashoori** — Data Engineer & Automation Enthusiast
 
----
 
-## 📄 License
-Licensed under the [MIT License](LICENSE).
 
