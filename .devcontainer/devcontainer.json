@@ -1,24 +1,33 @@
-// .devcontainer/devcontainer.json
 {
   "name": "Airflow AWS Dev",
   "dockerComposeFile": "../docker/docker-compose.yml",
   "service": "airflow-webserver",
-  "workspaceFolder": "/workspaces/airflow-aws-modernization",  // ✅ Use project root
+  "workspaceFolder": "/workspaces/airflow-aws-modernization",  // ✅ Project root
 
+  // ✅ Enable Docker-in-Docker
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:1": {}
   },
 
+  // ✅ Install additional Python packages
   "postCreateCommand": "pip install --upgrade pip && pip install pandas boto3 requests psycopg2-binary",
 
+  // ✅ Expose Airflow UI
   "forwardPorts": [8080],
 
+  // ✅ Useful Extensions
   "extensions": [
     "ms-python.python",
     "ms-toolsai.jupyter"
   ],
 
+  // ✅ Python path
   "settings": {
     "python.pythonPath": "/usr/local/bin/python"
-  }
+  },
+
+  // ✅ Always recommend adding this for Docker socket issues
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ]
 }
